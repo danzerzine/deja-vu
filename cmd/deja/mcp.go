@@ -2117,7 +2117,7 @@ func recallContextResultFrom(dir, q, harness string) (string, int, int64, []stri
 	} else if result.Fuzzy {
 		o.FuzzyVariants = result.Variants
 	}
-	if o.Tier == search.TierClose && o.FuzzyVariants == nil {
+	if (o.Tier == search.TierClose || result.Keyed) && o.FuzzyVariants == nil {
 		o.FuzzyVariants = result.Variants
 	}
 	var hits []search.Hit
@@ -2660,7 +2660,7 @@ func recallRank(dir, q string, o search.Options) (index.SearchResult, search.Opt
 	} else if result.Fuzzy {
 		o.FuzzyVariants = result.Variants
 	}
-	if o.Tier == search.TierClose && o.FuzzyVariants == nil {
+	if (o.Tier == search.TierClose || result.Keyed) && o.FuzzyVariants == nil {
 		o.FuzzyVariants = result.Variants
 	}
 	var hits []search.Hit

@@ -760,7 +760,9 @@ import (
 // keeps it as its parent (#5340).
 // 89: ё is filed as е, and queries fold it the same way, so «ещё» and «еще»
 // are one word.
-const version = 89
+// 90: a Cyrillic word also keys under its Snowball stem ("s"+stem), so a query
+// in any form of the word finds every form.
+const version = 90
 
 // onDiskFormat is how the store is laid out on disk — the record encoding, the
 // bucket encoding, the manifest's own shape. It moves only when a reader of an
@@ -1248,7 +1250,10 @@ type SearchResult struct {
 	// make (#1786).
 	Neighbour bool
 	Variants  map[string][]string
-	Tier      string
+	// Keyed says the first tier matched Cyrillic words by stem key, and Variants
+	// holds the stems the scorer has to count in place of the typed forms.
+	Keyed bool
+	Tier  string
 	// Total is how many sessions the tier matched before its own window
 	// trimmed them, and Capped whether that trimming withheld any. The
 	// relevance tier is the one that needs them: it ranks and truncates
